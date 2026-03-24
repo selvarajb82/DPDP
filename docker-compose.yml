@@ -2,6 +2,8 @@ services:
   backend:
     build: ./backend
     restart: unless-stopped
+    networks:
+      - traefik
     environment:
       DATABASE_URL: ${DATABASE_URL}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
@@ -14,8 +16,13 @@ services:
       SECRET_KEY: ${SECRET_KEY:-dev-secret-change-in-prod}
       FLASK_ENV: production
       FRONTEND_URL: ${FRONTEND_URL:-https://dpdp.vtogether.tech}
-    ports:
-      - "5000:5000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dpdp-backend.rule=Host(`dpdp.vtogether.tech`) && PathPrefix(`/api`)
+      - traefik.http.routers.dpdp-backend.tls=true
+      - traefik.http.routers.dpdp-backend.entrypoints=web,websecure
+      - traefik.http.routers.dpdp-backend.tls.certresolver=mytlschallenge
+      - traefik.http.services.dpdp-backend.loadbalancer.server.port=5000
 
   frontend:
     build:
@@ -25,5 +32,17 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    ports:
-      - "3000:80"
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dpdp-frontend.rule=Host(`dpdp.vtogether.tech`)
+      - traefik.http.routers.dpdp-frontend.tls=true
+      - traefik.http.routers.dpdp-frontend.entrypoints=web,websecure
+      - traefik.http.routers.dpdp-frontend.tls.certresolver=mytlschallenge
+      - traefik.http.services.dpdp-frontend.loadbalancer.server.port=80
+
+networks:
+  traefik:
+    external: true
+    name: n8n_default
