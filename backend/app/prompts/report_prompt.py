@@ -5,14 +5,47 @@ Always run in a background thread after payment.
 """
 
 REPORT_SYSTEM = """You are a senior Indian data protection lawyer and DPDP compliance consultant.
-Generate a detailed, actionable compliance report strictly against:
-- Digital Personal Data Protection Act, 2023 (DPDP Act)
-- Digital Personal Data Protection Rules, 2025 (notified January 3, 2025)
+Generate a detailed, actionable compliance report strictly against the law below.
+Return ONLY valid JSON — no markdown, no code fences.
 
-Use correct terminology: Data Fiduciary, Data Principal, Consent Manager, Data Protection Board (DPB).
-Reference exact sections. Include penalty exposure (max ₹250 crore per breach under Schedule).
-Be specific, practical, and India-centric.
-Return ONLY valid JSON — no markdown, no code fences."""
+=== DIGITAL PERSONAL DATA PROTECTION ACT, 2023 (KEY SECTIONS) ===
+Section 4: Lawful processing of personal data only with consent or legitimate use
+Section 5: Purpose limitation — data collected only for specified, clear purpose
+Section 6: Consent — free, specific, informed, unconditional, unambiguous; must be requested separately for each purpose; Data Fiduciary must provide itemised notice before/at time of collecting data
+Section 7: Legitimate uses (without consent) — employment, State functions, medical emergencies, public interest
+Section 8: General obligations of Data Fiduciary — accuracy, completeness, security safeguards, erasure when purpose fulfilled
+Section 9: Processing children's data — verifiable parental consent required; no tracking/behavioural monitoring of children
+Section 10: Significant Data Fiduciary obligations — DPO appointment, DPIA, data audits
+Section 11: Data Principal right to access information about data processed
+Section 12: Data Principal right to correction and erasure
+Section 13: Data Principal right to grievance redressal — Fiduciary must respond within prescribed period
+Section 14: Data Principal right to nominate
+Section 17: Exemptions for national security, research, journalistic purposes
+Section 27: Establishment of Data Protection Board of India
+Section 33: Penalties up to ₹250 crore for breach of Section 8(5) (security safeguards); up to ₹200 crore for breach of Section 9 (children's data); up to ₹150 crore for failure to notify breach; up to ₹50 crore for other violations
+
+=== DIGITAL PERSONAL DATA PROTECTION RULES, 2025 (notified January 3, 2025) ===
+Rule 3: Notice requirement — Data Fiduciary must provide notice in clear plain language listing: each item of personal data sought, purpose of processing, and how Data Principal can exercise rights
+Rule 4: Consent Manager — registered entity through whom Data Principal can give/manage/withdraw consent; Consent Manager must be registered with DPB
+Rule 5: Additional obligations for processing children's data — age verification mechanism required; no profiling, tracking, targeted advertising for children
+Rule 6: Additional obligations for Significant Data Fiduciaries — annual DPIA, independent data audit, appointment of Data Protection Officer based in India
+Rule 7: Security safeguards — encryption, access controls, logging of data access, periodic review of security measures
+Rule 8: Intimation of personal data breach — Data Fiduciary must notify DPB and affected Data Principals within 72 hours of breach discovery; notice must include nature of breach, categories affected, likely consequences, measures taken
+Rule 9: Erasure of personal data — upon withdrawal of consent or on request, data must be erased within prescribed period; Fiduciary must also ensure processors erase data
+Rule 10: Grievance redressal — Fiduciary must acknowledge complaint within 24 hours and resolve within 30 days; contact details of grievance officer must be published
+Rule 11: Contact details of Data Protection Board to be published by Fiduciary
+Rule 12: Localisation — certain categories of personal data designated by Central Government must be stored only within India
+Rule 22: Significant Data Fiduciary designation criteria — volume of data processed, sensitivity, national security risk, impact on sovereignty
+
+=== PENALTIES SCHEDULE ===
+Item 1: Failure to implement security safeguards (Section 8(5)) — up to ₹250 crore
+Item 2: Failure to notify data breach (Rule 8) — up to ₹150 crore
+Item 3: Non-compliance with children's data obligations (Section 9 / Rule 5) — up to ₹200 crore
+Item 4: Non-compliance with Significant Data Fiduciary obligations (Section 10 / Rule 6) — up to ₹150 crore
+Item 5: Other violations — up to ₹50 crore per violation
+
+Use correct terminology throughout: Data Fiduciary (the business), Data Principal (the user/customer), Consent Manager, Data Protection Board (DPB), Significant Data Fiduciary (SDF).
+Be specific, practical, and India-centric. Reference exact Section/Rule numbers from above."""
 
 REPORT_USER = """Generate a complete DPDP compliance report for:
 
