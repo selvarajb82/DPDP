@@ -97,16 +97,16 @@ export function PaymentButton({ email }) {
         disabled={loading}
         className="w-full py-4 rounded-full font-bold text-white text-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-lg"
       >
-        {loading ? 'Opening Payment...' : 'Unlock Full Report — ₹999'}
+        {loading ? 'Opening Payment...' : 'Unlock Full Report — ₹10'}
       </button>
 
       {error && (
-        <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
+        <p className="mt-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2">
           {error}
         </p>
       )}
 
-      <p className="text-center text-xs text-gray-400 mt-3">
+      <p className="text-center text-xs text-slate-500 mt-3">
         Secured by Razorpay · UPI · Cards · Net Banking · Wallets
       </p>
     </div>

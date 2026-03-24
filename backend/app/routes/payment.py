@@ -120,7 +120,7 @@ def verify_payment():
     if email:
         Thread(
             target=trigger_payment_confirmation,
-            args=(email, business_name, 99900),
+            args=(email, business_name, 1000),
             daemon=True,
         ).start()
 

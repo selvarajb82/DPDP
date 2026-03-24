@@ -81,7 +81,7 @@ export function ReportPreview({ previewData, onUnlock }) {
             <p className="text-slate-400 text-sm mb-4">
               Get your complete action plan, all compliance gaps, consent templates, and PDF download.
             </p>
-            <p className="text-3xl font-bold text-indigo-400 mb-4">₹999</p>
+            <p className="text-3xl font-bold text-indigo-400 mb-4">₹10</p>
             <ul className="text-left text-sm text-slate-400 space-y-1 mb-6">
               <li className="text-green-400">✓ Full compliance gap analysis</li>
               <li className="text-green-400">✓ Prioritised action plan</li>

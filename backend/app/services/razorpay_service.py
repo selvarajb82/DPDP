@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 RAZORPAY_API_BASE = "https://api.razorpay.com/v1"
 
 
-def create_razorpay_order(assessment_id: str, amount_paise: int = 99900) -> dict:
+def create_razorpay_order(assessment_id: str, amount_paise: int = 1000) -> dict:
     """
     Create a Razorpay order.
     Returns the Razorpay order object — use response['id'] as order_id for checkout.
