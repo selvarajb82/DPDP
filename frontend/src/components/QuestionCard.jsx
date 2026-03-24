@@ -1,15 +1,20 @@
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const QUESTION_OPTIONS = {
   business_type: ['Startup / SaaS', 'E-commerce', 'Mobile App', 'Website / Blog', 'Healthcare', 'Fintech', 'Other'],
+  country: ['India', 'United States', 'United Kingdom', 'Singapore', 'UAE', 'Other'],
   data_storage_location: ['India only', 'Outside India (AWS/GCP/Azure global)', 'Both India and overseas', 'Not sure'],
   cloud_provider: ['AWS', 'Google Cloud', 'Azure', 'DigitalOcean / Linode', 'Own servers', 'Not sure'],
   retention_period: ['Less than 1 year', '1–3 years', 'More than 3 years', 'No defined policy'],
   third_party_sharing: ['Yes, we share with partners', 'Yes, with analytics providers only', 'No third-party sharing', 'Not sure'],
 }
 
+const TEXT_INPUT_QUESTIONS = ['product_description']
+
 export function QuestionCard({ question, questionIndex, onAnswer }) {
   const options = QUESTION_OPTIONS[question.key]
+  const isText = TEXT_INPUT_QUESTIONS.includes(question.key)
 
   return (
     <AnimatePresence mode="wait">
@@ -29,7 +34,9 @@ export function QuestionCard({ question, questionIndex, onAnswer }) {
           {question.hint && <p className="text-sm text-gray-500 mt-1">{question.hint}</p>}
         </div>
 
-        {options ? (
+        {isText ? (
+          <TextQuestion questionKey={question.key} onAnswer={onAnswer} placeholder={question.hint} />
+        ) : options ? (
           <div className="grid gap-3">
             {options.map((option) => (
               <motion.button
@@ -48,6 +55,30 @@ export function QuestionCard({ question, questionIndex, onAnswer }) {
         )}
       </motion.div>
     </AnimatePresence>
+  )
+}
+
+function TextQuestion({ questionKey, onAnswer, placeholder }) {
+  const [value, setValue] = useState('')
+  return (
+    <div className="space-y-3">
+      <textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder || 'Type your answer here...'}
+        rows={3}
+        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 resize-none text-gray-700"
+      />
+      <motion.button
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.99 }}
+        onClick={() => { if (value.trim()) onAnswer(questionKey, value.trim()) }}
+        disabled={!value.trim()}
+        className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        Continue →
+      </motion.button>
+    </div>
   )
 }
 
