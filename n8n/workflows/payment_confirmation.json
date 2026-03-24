@@ -1,0 +1,40 @@
+{
+  "name": "DPDP - Payment Confirmation Email",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "payment-confirmation",
+        "responseMode": "responseNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "toEmail": "={{ $json.email }}",
+        "subject": "Payment confirmed — your DPDP report is being generated",
+        "html": "<p>Hi {{ $json.business_name }},</p><p>Your payment of ₹999 has been confirmed! Claude AI is now analysing your DPDP compliance assessment.</p><p>Your report will be ready in about 30 seconds. You can access it here:</p><p><a href='{{ $json.report_url }}'>View Your DPDP Compliance Report →</a></p><p>Bookmark this link — it works forever for re-access.</p><p>— DPDP Checker Team</p>"
+      },
+      "name": "Send Payment Email",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\": true}"
+      },
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{"node": "Send Payment Email", "type": "main", "index": 0}]] },
+    "Send Payment Email": { "main": [[{"node": "Respond", "type": "main", "index": 0}]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "notes": "Triggered by backend when Dodo webhook confirms payment. Payload: {email, business_name, report_url, assessment_id}"
+}

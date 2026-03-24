@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dpdp_checker
+      POSTGRES_USER: dpdp_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dpdp_user -d dpdp_checker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://dpdp_user:${POSTGRES_PASSWORD:-changeme}@db:5432/dpdp_checker
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-}
+      N8N_PAYMENT_WEBHOOK_URL: ${N8N_PAYMENT_WEBHOOK_URL:-}
+      N8N_REPORT_WEBHOOK_URL: ${N8N_REPORT_WEBHOOK_URL:-}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-change-in-prod}
+      FLASK_ENV: production
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5000}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:

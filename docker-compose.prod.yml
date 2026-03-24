@@ -1,0 +1,79 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dpdp_checker
+      POSTGRES_USER: dpdp_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dpdp_user -d dpdp_checker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://dpdp_user:${POSTGRES_PASSWORD}@db:5432/dpdp_checker
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET}
+      N8N_PAYMENT_WEBHOOK_URL: ${N8N_PAYMENT_WEBHOOK_URL}
+      N8N_REPORT_WEBHOOK_URL: ${N8N_REPORT_WEBHOOK_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      FLASK_ENV: production
+      FRONTEND_URL: https://dpdp.vtogether.tech
+      BACKEND_URL: https://dpdp.vtogether.tech
+    networks:
+      - internal
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=n8n_default"
+      # Route /api/ to backend
+      - "traefik.http.routers.dpdp-backend.rule=Host(`dpdp.vtogether.tech`) && PathPrefix(`/api/`)"
+      - "traefik.http.routers.dpdp-backend.entrypoints=websecure"
+      - "traefik.http.routers.dpdp-backend.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.dpdp-backend.loadbalancer.server.port=5000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: https://dpdp.vtogether.tech
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - internal
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=n8n_default"
+      # Route everything else to frontend
+      - "traefik.http.routers.dpdp-frontend.rule=Host(`dpdp.vtogether.tech`)"
+      - "traefik.http.routers.dpdp-frontend.entrypoints=websecure"
+      - "traefik.http.routers.dpdp-frontend.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.dpdp-frontend.loadbalancer.server.port=80"
+
+networks:
+  internal:
+    driver: bridge
+  traefik:
+    external: true
+    name: n8n_default
+
+volumes:
+  postgres_data:

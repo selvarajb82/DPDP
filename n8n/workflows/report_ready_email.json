@@ -1,0 +1,40 @@
+{
+  "name": "DPDP - Report Ready Email",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "report-ready",
+        "responseMode": "responseNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "toEmail": "={{ $json.email }}",
+        "subject": "Your DPDP Compliance Report is ready 📋",
+        "html": "<p>Hi {{ $json.business_name }},</p><p>Your full DPDP Compliance Report is ready! Here's what's included:</p><ul><li>Compliance Risk Score (0–100)</li><li>All compliance gaps with severity levels</li><li>Prioritised action plan</li><li>Template legal notices</li><li>PDF download</li></ul><p><a href='{{ $json.report_url }}' style='background:#2563eb;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;'>View Your Full Report →</a></p><p>This link is permanent — bookmark it for future reference.</p><p>— DPDP Checker Team</p>"
+      },
+      "name": "Send Report Email",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\": true}"
+      },
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{"node": "Send Report Email", "type": "main", "index": 0}]] },
+    "Send Report Email": { "main": [[{"node": "Respond", "type": "main", "index": 0}]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "notes": "Triggered when Claude finishes generating full report. Payload: {email, business_name, report_url, risk_score, risk_level}"
+}

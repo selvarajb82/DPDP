@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: dpdp_checker
+      POSTGRES_USER: dpdp_user
+      POSTGRES_PASSWORD: devpassword
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://dpdp_user:devpassword@db:5432/dpdp_checker
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-}
+      N8N_PAYMENT_WEBHOOK_URL: ${N8N_PAYMENT_WEBHOOK_URL:-http://localhost:5678/webhook/payment}
+      N8N_REPORT_WEBHOOK_URL: ${N8N_REPORT_WEBHOOK_URL:-http://localhost:5678/webhook/report}
+      SECRET_KEY: dev-secret-key
+      FLASK_ENV: development
+      FLASK_DEBUG: "1"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    command: ["flask", "--app", "run", "run", "--host=0.0.0.0", "--port=5000", "--debug"]
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:5000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+
+volumes:
+  postgres_dev_data:
