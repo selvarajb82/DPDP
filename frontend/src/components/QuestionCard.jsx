@@ -27,11 +27,11 @@ export function QuestionCard({ question, questionIndex, onAnswer }) {
         className="w-full"
       >
         <div className="mb-6">
-          <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
+          <span className="text-sm font-medium text-indigo-400 uppercase tracking-wide">
             {question.category}
           </span>
-          <h2 className="text-xl font-semibold text-gray-900 mt-2">{question.text}</h2>
-          {question.hint && <p className="text-sm text-gray-500 mt-1">{question.hint}</p>}
+          <h2 className="text-xl font-semibold text-white mt-2">{question.text}</h2>
+          {question.hint && <p className="text-sm text-slate-400 mt-1">{question.hint}</p>}
         </div>
 
         {isText ? (
@@ -44,7 +44,7 @@ export function QuestionCard({ question, questionIndex, onAnswer }) {
                 whileHover={{ scale: 1.01, x: 4 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={() => onAnswer(question.key, option)}
-                className="w-full text-left px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all font-medium text-gray-700"
+                className="w-full text-left px-4 py-3 rounded-xl border-2 border-slate-700 hover:border-indigo-500 hover:bg-indigo-500/10 transition-all font-medium text-slate-200 bg-slate-800"
               >
                 {option}
               </motion.button>
@@ -67,7 +67,7 @@ function TextQuestion({ questionKey, onAnswer, placeholder }) {
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder || 'Type your answer here...'}
         rows={3}
-        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 resize-none text-gray-700"
+        className="w-full px-4 py-3 border-2 border-slate-700 rounded-xl focus:outline-none focus:border-indigo-500 resize-none text-slate-200 bg-slate-800 placeholder-slate-500"
       />
       <motion.button
         whileHover={{ scale: 1.01 }}
@@ -91,7 +91,7 @@ function YesNoQuestion({ questionKey, onAnswer }) {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => onAnswer(questionKey, opt)}
-          className="flex-1 py-3 rounded-xl border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 font-semibold text-gray-700 transition-all"
+          className="flex-1 py-3 rounded-xl border-2 border-slate-700 hover:border-indigo-500 hover:bg-indigo-500/10 font-semibold text-slate-200 bg-slate-800 transition-all"
         >
           {opt}
         </motion.button>

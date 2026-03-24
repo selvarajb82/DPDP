@@ -75,31 +75,31 @@ export function AssessmentForm() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-6"
       >
-        <h2 className="text-2xl font-bold text-gray-900">Before we start</h2>
-        <p className="text-gray-600">This takes about 3–5 minutes. We'll ask 15 questions about your data practices.</p>
+        <h2 className="text-2xl font-bold text-white">Before we start</h2>
+        <p className="text-slate-400">This takes about 3–5 minutes. We'll ask 15 questions about your data practices.</p>
         <div className="space-y-4 text-left max-w-sm mx-auto">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Business Name <span className="text-gray-400">(optional)</span>
+            <label className="block text-sm font-medium text-slate-300 mb-1">
+              Business Name <span className="text-slate-500">(optional)</span>
             </label>
             <input
               type="text"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
               placeholder="e.g. Acme Technologies"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-700 bg-slate-800 text-white placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email <span className="text-gray-400">(to receive your report link)</span>
+            <label className="block text-sm font-medium text-slate-300 mb-1">
+              Email <span className="text-slate-500">(to receive your report link)</span>
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-700 bg-slate-800 text-white placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
         </div>
@@ -124,7 +124,7 @@ export function AssessmentForm() {
           animate={{ opacity: 1, y: 0 }}
           className="pt-4"
         >
-          {error && <p className="text-red-600 text-sm mb-3 text-center">{error}</p>}
+          {error && <p className="text-red-400 text-sm mb-3 text-center">{error}</p>}
           <GradientButton
             onClick={handleSubmit}
             disabled={submitting}
