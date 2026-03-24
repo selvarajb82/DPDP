@@ -35,7 +35,7 @@ class Payment(Base):
         }
 
 
-def create_payment(db: Session, assessment_id: str, amount: int = 99900) -> Payment:
+def create_payment(db: Session, assessment_id: str, amount: int = 1000) -> Payment:
     payment = Payment(
         assessment_id=assessment_id,
         amount=amount,
