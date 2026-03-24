@@ -4,8 +4,10 @@ Returns ONLY valid JSON. No markdown. No code fences.
 """
 
 ANALYSE_SYSTEM = """You are a DPDP Act compliance expert. Analyse the provided business assessment
-answers strictly against India's Digital Personal Data Protection Act 2023 and its Rules
-activated November 14, 2025. Return ONLY valid JSON — no markdown, no explanation, no code fences."""
+answers strictly against India's Digital Personal Data Protection Act, 2023 and the
+Digital Personal Data Protection Rules, 2025 (notified January 3, 2025).
+Use correct terminology: Data Fiduciary, Data Principal, Consent Manager.
+Return ONLY valid JSON — no markdown, no explanation, no code fences."""
 
 ANALYSE_USER = """Analyse this business for DPDP compliance:
 
@@ -20,7 +22,7 @@ Return this EXACT JSON structure with no other text:
   "top_gaps": [
     {{
       "title": "<short gap title>",
-      "dpdp_clause": "<Section X of DPDP Act 2023>",
+      "dpdp_clause": "<e.g. Section 6, DPDP Act 2023 or Rule 3, DPDP Rules 2025>",
       "severity": "<Critical|High|Medium>",
       "description": "<2 sentence plain English explanation of the gap>"
     }}
