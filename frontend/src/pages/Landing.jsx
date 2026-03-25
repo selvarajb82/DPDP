@@ -12,7 +12,7 @@ const STEPS = [
     step: '02',
     icon: '🤖',
     title: 'Get Instant Risk Score',
-    desc: 'Our AI analyses your answers against every section of the DPDP Act 2023 and generates a risk score.',
+    desc: 'Our AI analyses your answers against every section of the DPDP Act 2025 and generates a risk score.',
   },
   {
     step: '03',
@@ -27,7 +27,7 @@ const FEATURES = [
   { icon: '🔒', title: 'No account required', desc: 'Anonymous by default. No sign-up, no lock-in.' },
   { icon: '📄', title: 'PDF download', desc: 'Share your compliance report with your team or legal advisor.' },
   { icon: '♾️', title: 'Permanent access link', desc: 'Your report link never expires. Access it anytime.' },
-  { icon: '⚖️', title: 'DPDP Act 2023 specific', desc: 'Built specifically for India\'s DPDP Act — not a generic tool.' },
+  { icon: '⚖️', title: 'DPDP Act 2025 specific', desc: 'Built specifically for India\'s latest DPDP Act — not a generic tool.' },
   { icon: '🎯', title: 'Actionable steps', desc: 'Not just a score — a prioritised action plan you can act on today.' },
 ]
 
@@ -111,7 +111,7 @@ export default function Landing() {
             custom={2}
             className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed"
           >
-            Our AI analyses your data practices against India's DPDP Act 2023 and gives you a
+            Our AI analyses your data practices against India's DPDP Act 2025 and gives you a
             risk score + full action plan. Enterprise tools charge ₹5 lakhs/year.
             <span className="text-white font-semibold"> We charge ₹999.</span>
           </motion.p>
@@ -228,7 +228,7 @@ export default function Landing() {
             <div className="text-slate-400 mb-8">one-time · instant access</div>
             <ul className="text-left space-y-3 mb-10">
               {[
-                'Full DPDP Act 2023 compliance gap analysis',
+                'Full DPDP Act 2025 compliance gap analysis',
                 'Prioritised action plan with deadlines',
                 'Ready-to-use consent & privacy templates',
                 'Score breakdown by category',
